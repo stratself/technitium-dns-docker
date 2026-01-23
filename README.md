@@ -9,7 +9,7 @@ Technitium DNS Server using Alpine with the some tweaks:
 
 Setup should be same as [typical Technitium](https://github.com/TechnitiumSoftware/DnsServer/blob/master/docker-compose.yml), please open issue if otherwise. Use at your own risk.
 
-Images are tagged according to TDNS versions.
+Images are tagged according to TDNS versions, with a `v` prefix (i.e. `v14.3.0`).
 
 Links:
 

@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "*"
   workflow_dispatch:
-
+  
 jobs:
   
   build-images:
@@ -29,7 +31,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           image: ${{ env.IMAGE_NAME }}
           tags: latest ${{ github.ref_name }}
-          containerfiles: ${{ matrix.containerfile }}
+          containerfiles: ./Containerfile
 
       - name: Push to registry
         uses: redhat-actions/push-to-registry@v2
