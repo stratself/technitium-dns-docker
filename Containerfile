@@ -8,16 +8,16 @@ WORKDIR /build
 # Install build packages
 RUN apk -U add --no-cache libmsquic dotnet9-sdk git curl
 
-RUN export DOTNETARCH=${TARGETARCH} && \
-    if [ $TARGETARCH == 'amd64' ]; then export DOTNETARCH="x64"; fi
-    
-    # Clone the repositories
+# Clone the repository  
 RUN --mount=type=bind,source=technitium.patch,target=/build/technitium.patch \
     git clone --branch dns-server-${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/TechnitiumLibrary.git TechnitiumLibrary && \
     git clone --branch=${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/DnsServer.git DnsServer && \
     git apply -v technitium.patch --directory DnsServer/
 
-RUN dotnet build \
+RUN export DOTNETARCH=${TARGETARCH} && \
+    if [ $TARGETARCH == 'amd64' ]; then export DOTNETARCH="x64"; fi && \
+    
+    dotnet build \
         TechnitiumLibrary/TechnitiumLibrary.ByteTree/TechnitiumLibrary.ByteTree.csproj \
         -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin && \
     dotnet build \
