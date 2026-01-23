@@ -41,7 +41,7 @@ ENV LD_PRELOAD="/usr/lib/libmimalloc.so"
 
 WORKDIR /opt/technitium/dns
 
-COPY --link --from=build /build/publish /opt/technitium/dns
+COPY --from=build /build/publish /opt/technitium/dns
 
 ENTRYPOINT ["/opt/technitium/dns/DnsServerApp"]
 CMD ["/etc/dns"]
