@@ -8,36 +8,32 @@ WORKDIR /build
 # Install build packages
 RUN apk -U add --no-cache libmsquic dotnet9-sdk git curl
 
-RUN --mount=type=bind,source=technitium.patch,target=/build/technitium.patch <<HEREDOC
-    
-    if [ $TARGETARCH == 'amd64' ]; then 
-        export DOTNETARCH="x64"
-    else 
-        export DOTNETARCH=${TARGETARCH}
-    fi
+RUN if [ $TARGETARCH == 'amd64' ]; then 
+        export DOTNETARCH="x64" \
+    else \
+        export DOTNETARCH=${TARGETARCH} \
+    fi \
 
     # Clone the repositories
-    git clone --branch dns-server-${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/TechnitiumLibrary.git TechnitiumLibrary
-    git clone --branch=${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/DnsServer.git DnsServer
+RUN --mount=type=bind,source=technitium.patch,target=/build/technitium.patch \
+    git clone --branch dns-server-${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/TechnitiumLibrary.git TechnitiumLibrary && \
+    git clone --branch=${DNS_SERVER_VERSION} --depth 1 https://github.com/TechnitiumSoftware/DnsServer.git DnsServer && \
+    git apply -v technitium.patch --directory DnsServer/
 
-    # Build TechnitiumLibraries
-    dotnet build \
+RUN dotnet build \
         TechnitiumLibrary/TechnitiumLibrary.ByteTree/TechnitiumLibrary.ByteTree.csproj \
-        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin
+        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin && \
     dotnet build \
         TechnitiumLibrary/TechnitiumLibrary.Net/TechnitiumLibrary.Net.csproj \
-        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin
+        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin  && \
     dotnet build \
         TechnitiumLibrary/TechnitiumLibrary.Security.OTP/TechnitiumLibrary.Security.OTP.csproj \
-        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin
+        -c Release -r linux-musl-${DOTNETARCH} -o ./TechnitiumLibrary/bin && \
 
     # Compile DnsServer with applied patch
-    git apply -v technitium.patch --directory DnsServer/
     dotnet publish \
         DnsServer/DnsServerApp/DnsServerApp.csproj \
         -c Release -r linux-musl-${DOTNETARCH} -o ./publish --self-contained
-
-HEREDOC
 
 FROM docker.io/alpine:latest
 
