@@ -1,0 +1,28 @@
+diff --git a/DnsServerCore/Dns/DnsServer.cs b/DnsServerCore/Dns/DnsServer.cs
+index ffbfbf8..e58e58e 100644
+--- a/DnsServerCore/Dns/DnsServer.cs
++++ b/DnsServerCore/Dns/DnsServer.cs
+@@ -7374,8 +7374,8 @@ namespace DnsServerCore.Dns
+             get { return _serveStaleMaxWaitTime; }
+             set
+             {
+-                if ((value < 0) || (value > 1800))
+-                    throw new ArgumentOutOfRangeException(nameof(ServeStaleMaxWaitTime), "Serve stale max wait time valid range is 0 to 1800 milliseconds. Default value is 1800 milliseconds.");
++                if ((value < 0) || (value > 6400))
++                    throw new ArgumentOutOfRangeException(nameof(ServeStaleMaxWaitTime), "Serve stale max wait time valid range is 0 to 6400 milliseconds. Default value is 1800 milliseconds.");
+
+                 _serveStaleMaxWaitTime = value;
+             }
+diff --git a/DnsServerCore/www/index.html b/DnsServerCore/www/index.html
+index 5f5b75e..37484ab 100644
+--- a/DnsServerCore/www/index.html
++++ b/DnsServerCore/www/index.html
+@@ -1771,7 +1771,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+                                                             <label for="txtServeStaleMaxWaitTime" class="col-sm-3 control-label">Serve Stale Max Wait Time</label>
+                                                             <div class="col-sm-6">
+                                                                 <input type="number" class="form-control" id="txtServeStaleMaxWaitTime" placeholder="milliseconds" style="width: 100px; display: inline;">
+-                                                                <span>milliseconds (valid range 0-1800; default 1800)</span>
++                                                                <span>milliseconds (valid range 0-6400; default 1800)</span>
+                                                             </div>
+                                                             <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The time in milliseconds that the DNS server must wait for the resolver before serving stale records from the cache. Lower value will ensure faster response at the expense of not getting updated data from the upstream. Setting value to 0 will instantly return stale answer without waiting for the resolver to fetch updates from the upstream.</div>
+                                                         </div>
