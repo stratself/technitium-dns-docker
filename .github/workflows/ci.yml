@@ -28,7 +28,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           oci: true
-          platforms: amd64
+          platforms: linux/amd64
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ github.ref_name }}-amd64
           containerfiles: ./Containerfile
@@ -38,7 +38,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           oci: true
-          platforms: arm64
+          platforms: linux/arm64
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ github.ref_name }}-arm64
           containerfiles: ./Containerfile
