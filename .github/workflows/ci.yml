@@ -45,7 +45,7 @@ jobs:
 
       - name: Combine imagine manifest
         run: |
-          buildah manifest create ${{ env.IMAGE_NAME }}
+          buildah manifest create ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
           buildah manifest add localhost/technitium-dns-server ${{ steps.build-image-amd64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
           buildah manifest add localhost/technitium-dns-server ${{ steps.build-image-arm64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
 
