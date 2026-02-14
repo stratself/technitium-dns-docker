@@ -13,15 +13,14 @@ jobs:
   build-images:
 
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/containers/aio:latest
+
     env:
       IMAGE_NAME: technitium-dns-server
 
     steps:
 
-      - name: Install relevant packages
-        run: dnf upgrade -y && dnf install git nodejs curl -y 
+      - name: Troubleshoot buildah
+        run: buildah bud --help
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,6 +38,7 @@ jobs:
           containerfiles: ./Containerfile
           extra-args: |
             --isolation=chroot 
+            --platform linux/amd64
 
       - name: Buildah build image (arm64)
         id: build-image-arm64
@@ -51,6 +51,7 @@ jobs:
           containerfiles: ./Containerfile
           extra-args: |
             --isolation=chroot 
+            --platform linux/arm64
 
       - name: Combine imagine manifest
         run: |
