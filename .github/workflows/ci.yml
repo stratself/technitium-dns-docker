@@ -21,7 +21,7 @@ jobs:
     steps:
 
       - name: Install relevant packages
-        run: dnf upgrade && dnf install git nodejs curl
+        run: dnf upgrade && dnf install -y git nodejs curl
 
       - name: Checkout
         uses: actions/checkout@v4
