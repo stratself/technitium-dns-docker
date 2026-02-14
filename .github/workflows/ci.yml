@@ -13,10 +13,15 @@ jobs:
   build-images:
 
     runs-on: ubuntu-latest
+    container:
+      image: docker.io/alpine:latest
     env:
       IMAGE_NAME: technitium-dns-server
 
     steps:
+
+      - name: Install relevant packages
+        run: apk -U upgrade && apk -U add --no-cache git bash nodejs curl buildah podman
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,6 +47,7 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ github.ref_name }}-arm64
           containerfiles: ./Containerfile
+
 
       - name: Combine imagine manifest
         run: |
