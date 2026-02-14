@@ -14,14 +14,14 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: docker.io/alpine:latest
+      image: quay.io/containers/aio:latest
     env:
       IMAGE_NAME: technitium-dns-server
 
     steps:
 
       - name: Install relevant packages
-        run: apk -U upgrade && apk -U add --no-cache git bash nodejs curl buildah podman
+        run: dnf upgrade && dnf install git nodejs curl
 
       - name: Checkout
         uses: actions/checkout@v4
