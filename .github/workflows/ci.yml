@@ -46,8 +46,8 @@ jobs:
       - name: Combine imagine manifest
         run: |
           buildah manifest create ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-          buildah manifest add localhost/technitium-dns-server ${{ steps.build-image-amd64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
-          buildah manifest add localhost/technitium-dns-server ${{ steps.build-image-arm64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
+          buildah manifest add technitium-dns-server:${{ github.ref_name }} ${{ steps.build-image-amd64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
+          buildah manifest add technitium-dns-server:${{ github.ref_name }} ${{ steps.build-image-arm64.outputs.image }}:${{ steps.build-image-amd64.outputs.tags }}
 
       - name: Push to registry
         uses: redhat-actions/push-to-registry@v2
