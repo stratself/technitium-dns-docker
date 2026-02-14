@@ -32,26 +32,22 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           oci: true
-          platforms: linux/amd64
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ github.ref_name }}-amd64
           containerfiles: ./Containerfile
           extra-args: |
-            --isolation=chroot 
-            --platform linux/amd64
+            --platform=linux/amd64
 
       - name: Buildah build image (arm64)
         id: build-image-arm64
         uses: redhat-actions/buildah-build@v2
         with:
           oci: true
-          platforms: linux/arm64
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ github.ref_name }}-arm64
           containerfiles: ./Containerfile
           extra-args: |
-            --isolation=chroot 
-            --platform linux/arm64
+            --platform=linux/arm64
 
       - name: Combine imagine manifest
         run: |
